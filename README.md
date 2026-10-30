@@ -1,124 +1,71 @@
-# Endpoint counts of graceful permutations of paths
-
-Dataset accompanying the research note *"A divisibility-by-eight conjecture
-for graceful permutations of paths"* and the technical note *"Endpoint
-structure of graceful permutations of paths"* (M. Moriyama). It collects
-exact counts of graceful permutations of the path graph P_n, resolved by
-their endpoint pair.
-
-## Definitions
-
-A *graceful permutation* of P_n is a permutation (x_1, ..., x_n) of
-{0, ..., n-1} whose consecutive absolute differences |x_{i+1} - x_i| are all
-distinct (hence a permutation of {1, ..., n-1}). G(n) is the number of
-graceful permutations of P_n (OEIS A006967). G(n; a, b) is the number of
-graceful permutations with first term a and last term b, and m = n - 1.
-
-## Contents
-
-```
-data/graceful_counts_n5_71.tsv   G(n) for n = 5..71 with per-value
-                                 verification status and run statistics
-data/graceful_endpoint_counts.csv
-                                 all endpoint tables in one file, with
-                                 header: n,a,b,count (121,806 rows,
-                                 n = 5..71)
-data/endpoints/endpoints_n*.csv  the same tables, one file per n
-                                 (no header), n^2 rows per file
-source/                          implementations (see Provenance)
-checks/                          run outputs of the counting programs and
-                                 verify_package.py, an independent checker
-                                 for the packaged endpoint files
-docs/                            predictions recorded before computation
-                                 (n = 51..64, 67..71) with their hashes
-MANIFEST.sha256                  SHA-256 hashes of the packaged files
-```
-
-Endpoint tables are included for every n = 5..71. In the Zenodo record,
-the per-n tables are also bundled as `endpoints_per_n.zip` and the run
-outputs and checker as `reproducibility_checks.zip`.
-
-## Verification status
-
-No third-party tabulation of the endpoint counts was found (OEIS A006967 and
-references checked, October 2026). Verification is therefore layered, and
-the layer covering each range of G(n) is recorded in the `verification`
-column of `graceful_counts_n5_71.tsv`:
-
-- **G(n), n <= 59 (category A):** agrees with the published b-file of
-  OEIS A006967 (terms 0..40 from Adamaszek, term 41 from Knuth, terms
-  42..59 as listed there). This includes an independent recomputation of
-  a(41).
-- **G(n), n = 60..68 (category C):** two builds of the counting program
-  agree.
-- **G(n), n = 69..71 (category C):** a rerun with a different thread count
-  (10 instead of 8) reproduces G, the maximum state count, the expansion
-  count and the maximum endpoint count exactly.
-- **Endpoint runs, n = 67..71:** the totals of the endpoint tables (10
-  threads) reproduce G(n) and the maximum state count of the G-only runs.
-- **Endpoint counts, n <= 18:** produced by an independent complete
-  enumeration (`source/graceful_enum.c`, `graceful_enum_shard.c`). The
-  restored endpoint counts of the main program agree with this
-  enumeration on every cell for n = 5..18.
-- **Endpoint counts in alpha-labeling cells, N <= 55:** the sums over the
-  cells that carry alpha-labelings (b - a = ceil(m/2) for even N;
-  a + b = m/2 and a + b = 3m/2 for odd N, one orientation) agree with the
-  independent counts of OEIS A395104 for all N = 5..55. This is a
-  third-party check of those cells for 19 <= n <= 55.
-- **Source rebuild:** the packaged `source/adam2_v3.cpp`, recompiled in a
-  clean environment, reproduces the packaged endpoint tables for n = 18
-  and n = 24 exactly (see `checks/rebuild_check.log`).
-- **Endpoint counts, n >= 19 (other cells):** single implementation;
-  internal checks only (row sums equal G(n); no violations of the
-  endpoint-parity proposition or of Lemma 2 of the note; the zigzag value
-  G(n; 0, ceil(m/2)) equals 1). The reversal and complement symmetries of
-  the restored table are imposed by the restoration construction and are
-  *not* independent checks.
-
-`checks/verify_package.py` re-runs the total, parity, zigzag and
-decomposition-parity checks on the packaged files; its output is in
-`checks/checks_dataset.log` (rerun on all n = 5..71: ALL OK).
-
-## How the counts were produced
-
-The main program (`adam2`, Adamaszek-style layered dynamic programming)
-counts graceful permutations level by level. Endpoint counts are restored
-from the final layer, whose states carry an unordered endpoint pair {a, b}
-and a complement-merged count M with M = 2 * G(n; a, b) when a + b != m and
-M = G(n; a, b) when a + b = m. Source snapshot: `source/adam2_v3.cpp`
-(SHA-256 1a1490c5e6d12e82e2d1d99dc02077dd61530c7c96f02be4b2e9891785e6e5fb);
-the same code is developed in the linked GitHub repository.
-
-Provenance by range: endpoint counts for n = 5..41 were computed on Linux
-with 1 thread; n = 42..50 on Windows with 8 threads; n = 51..64 on Windows
-with 8 threads; n = 65, 66 with 8 threads; n = 67..71 with
-10 threads (Ryzen 5 5500GT, 128 GB; n = 71 took 3641 s, peak 815,079,482
-states per level). See the run tables in `checks/`.
-
-The programs were written with AI assistance (see the note).
-
-## Limitations
-
-- The endpoint counts for n >= 19 rest on a single implementation plus the
-  internal checks listed above, except for the alpha-labeling cells with
-  N <= 55; an independent reimplementation would strengthen them.
-- Predictions recorded before computation were confirmed by the computed
-  files: numbers of odd endpoint classes for n = 42..47; numbers,
-  positions and parities of the exceptional classes for n = 65, 66; the
-  full sets of odd classes and the complementary classes for n = 51..64
-  and 67..71. The hashes of the prediction files were recorded in advance
-  but not publicly timestamped. These are consistency evidence, not
-  verification by a third party.
-
-## Related records
-
-- Research note (Zenodo): DOI to be inserted.
-- Technical note (Zenodo): DOI to be inserted.
-- Source code (GitHub): https://github.com/Moriyamax/graceful-path-endpoints
-  (releases are archived to Zenodo; software DOI to be inserted).
-- OEIS A006967: https://oeis.org/A006967 ; OEIS A395104:
-  https://oeis.org/A395104
-
-## License and author
-
-Data and this README: CC BY 4.0. Author: M. Moriyama.
+adam2 — counting graceful permutations of paths
+Programs for counting graceful permutations of the path graph P_n
+(OEIS A006967), written for the research note *"A divisibility-by-eight
+conjecture for graceful permutations of paths"* (M. Moriyama).
+A graceful permutation is a permutation (x_1, ..., x_n) of {0, ..., n-1}
+whose consecutive absolute differences are all distinct. G(n) is their
+number, and G(n; a, b) the number with first term a and last term b.
+Programs
+adam2_v3.cpp — the main counter. Adamaszek-style layered dynamic
+  programming, multithreaded, exact arithmetic in unsigned __int128.
+  With --endpoints DIR it also restores the endpoint-resolved counts
+  G(n; a, b) from the final layer: final states carry an unordered
+  endpoint pair {a, b} and a complement-merged count M with
+  M = 2 * G(n; a, b) if a + b != m and M = G(n; a, b) if a + b = m
+  (m = n - 1).
+graceful_enum.c, graceful_enum_shard.c — a plain complete
+  enumeration (backtracking), used as an independent cross-check for
+  small n. The shard version splits the count by first term.
+The programs were written with AI assistance.
+Build
+g++ -O2 -pthread -o adam2 adam2_v3.cpp
+Verified with g++ 13.3 on Linux; the production runs were made on the
+author's Windows and Linux machines.
+Usage
+./adam2 N_FROM [N_TO] [--threads T] [--results FILE]
+        [--ckpt DIR [--ckpt-every K]] [--endpoints DIR]
+        [--verbose] [--stop-after-level L]
+Examples:
+./adam2 18 18 --threads 4 --endpoints ep --results res.tsv
+./adam2 65 66 --threads 8 --endpoints ep --results ep65.tsv
+Outputs:
+results TSV, one row per n: `n, G, seconds, max_states_per_level,
+  expansions, peak_RSS_KB, threads, max_endpoints`.
+endpoints_n<n>.csv per n: rows n,a,b,count (no header), the full
+  n x n table of G(n; a, b).
+Scale of the production runs
+G(n) was computed for n = 5..71. On the author's machine the single runs
+for n = 69..71 took about 2,600–4,400 s at 8 threads (maximum states per
+level 815,079,482 at n = 71); restoring endpoint tables for n = 65 took
+about 900 s at 8 threads. Memory use grows with the state count; the
+author's pre-run estimate for the n = 65/66 endpoint runs was
+25–30 GiB.
+Verification status (summary)
+G(n) agrees with the published b-file of OEIS A006967 for n <= 59.
+Two builds agree for n = 60..68; a rerun with a different thread count
+  reproduces n = 69..71 exactly (counts, state maxima, expansions).
+The endpoint tables of adam2 agree with the independent complete
+  enumeration (graceful_enum.c) on every cell for n <= 18.
+This source, recompiled from a clean checkout, reproduces the
+  published endpoint tables for n = 18 and n = 24 exactly.
+No third-party tabulation of the endpoint counts was found; for
+  n >= 19 they rest on this implementation plus internal consistency
+  checks (row sums, endpoint-parity proposition, zigzag value).
+Full data and the detailed verification record are in the accompanying
+dataset.
+Data and note
+Dataset (Zenodo): DOI to be inserted. The dataset files are also in
+  data/ in this repository: the values of G(n) for n = 5..71, the
+  combined endpoint table (51,476 rows), the per-n endpoint tables
+  (zipped), the reproducibility checks (zipped), a data README and a
+  SHA-256 manifest.
+Research note (Zenodo): DOI to be inserted. Current published version:
+  https://zenodo.org/records/23649710 (v3); a revised version is in
+  preparation.
+Parity structure of the odd endpoint classes and pre-registered
+  predictions for n = 51..64 and 67..71: see
+  docs/odd_class_structure.md and
+  docs/predictions_n51_64_67_71.md, figures in docs/figures/.
+OEIS A006967: https://oeis.org/A006967
+License
+MIT (see LICENSE). Author: M. Moriyama.
