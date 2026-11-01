@@ -1,0 +1,60 @@
+cff-version: 1.2.0
+message: "If you use this software or the accompanying data, please cite the dataset record and this repository as below."
+title: "adam2: counting graceful permutations of paths, with endpoint-resolved counts"
+abstract: >-
+  Programs for counting graceful permutations of the path graph P_n
+  (OEIS A006967). adam2_v3.cpp is an Adamaszek-style layered
+  dynamic-programming counter that can also restore the
+  endpoint-resolved counts G(n; a, b) from its final layer;
+  graceful_enum.c and graceful_enum_shard.c are an independent complete
+  enumeration used as a cross-check for small n. The data/ directory
+  mirrors the endpoint-resolved dataset archived on Zenodo.
+authors:
+  - family-names: Moriyama
+    given-names: Masaru
+date-released: 2026-10-30
+license: MIT
+url: "https://github.com/Moriyamax/graceful-path-endpoints"
+repository-code: "https://github.com/Moriyamax/graceful-path-endpoints"
+identifiers:
+  - type: url
+    value: "https://github.com/Moriyamax/graceful-path-endpoints"
+    description: "GitHub repository (no software DOI yet)"
+keywords:
+  - graceful permutations
+  - graceful labelings
+  - path graph
+  - endpoint counts
+  - exact enumeration
+  - OEIS A006967
+references:
+  - type: dataset
+    title: "Endpoint-resolved counts of graceful permutations of paths, n = 5 to 71"
+    authors:
+      - family-names: Moriyama
+        given-names: Masaru
+    year: 2026
+    identifiers:
+      - type: doi
+        value: "10.5281/zenodo.23801688"
+    notes: "Dataset produced with this software; version of record."
+  - type: article
+    title: "Conjecture: 8 | G(n) for every n >= 5, checked for all n <= 71"
+    authors:
+      - family-names: Moriyama
+        given-names: Masaru
+    year: 2026
+    identifiers:
+      - type: doi
+        value: "10.5281/zenodo.23634015"
+    notes: "Concept DOI (all versions); version 4 is record 23803911."
+  - type: article
+    title: "Endpoint structure of graceful permutations of paths: alpha-labelings, a halving congruence, and reductions toward 8 | G(n)"
+    authors:
+      - family-names: Moriyama
+        given-names: Masaru
+    year: 2026
+    identifiers:
+      - type: doi
+        value: "10.5281/zenodo.23802065"
+    notes: "Concept DOI (all versions); version 2 is record 23820863."

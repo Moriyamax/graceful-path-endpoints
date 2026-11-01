@@ -1,8 +1,10 @@
 # adam2 — counting graceful permutations of paths
 
 Programs for counting graceful permutations of the path graph P_n
-(OEIS A006967), written for the research note *"A divisibility-by-eight
-conjecture for graceful permutations of paths"* (M. Moriyama).
+(OEIS A006967), written for the research note *"Conjecture: 8 | G(n)
+for every n ≥ 5, checked for all n ≤ 71"* (M. Moriyama) and the
+technical note *"Endpoint structure of graceful permutations of
+paths"* (M. Moriyama).
 
 A graceful permutation is a permutation (x_1, ..., x_n) of {0, ..., n-1}
 whose consecutive absolute differences are all distinct. G(n) is their
@@ -70,6 +72,8 @@ author's pre-run estimate for the n = 65/66 endpoint runs was
   reproduces n = 69..71 exactly (counts, state maxima, expansions).
 - The endpoint tables of `adam2` agree with the independent complete
   enumeration (`graceful_enum.c`) on every cell for n <= 18.
+- The sums over the endpoint cells that carry alpha-labelings agree
+  with the independent counts of OEIS A395104 for all N = 5..55.
 - This source, recompiled from a clean checkout, reproduces the
   published endpoint tables for n = 18 and n = 24 exactly.
 - No third-party tabulation of the endpoint counts was found; for
@@ -77,24 +81,31 @@ author's pre-run estimate for the n = 65/66 endpoint runs was
   checks (row sums, endpoint-parity proposition, zigzag value).
 
 Full data and the detailed verification record are in the accompanying
-dataset.
+dataset (see below, and `data/README.md`).
 
-## Data and note
+## Data and notes
 
-- Dataset (Zenodo): DOI to be inserted. The dataset files are also in
-  `data/` in this repository: the values of G(n) for n = 5..71, the
-  combined endpoint table (51,476 rows), the per-n endpoint tables
-  (zipped), the reproducibility checks (zipped), a data README and a
-  SHA-256 manifest.
-- Research note (Zenodo): DOI to be inserted. Current published version:
-  https://zenodo.org/records/23649710 (v3); a revised version is in
-  preparation.
+- Dataset (Zenodo): doi:10.5281/zenodo.23801688 (all versions:
+  doi:10.5281/zenodo.23801687) — *"Endpoint-resolved counts of graceful
+  permutations of paths, n = 5 to 71"*. The `data/` directory of this
+  repository mirrors that record: the values of G(n) for n = 5..71,
+  the combined endpoint table (121,806 rows), the per-n endpoint
+  tables (zipped), the reproducibility checks (zipped), a data README
+  and a SHA-256 manifest. The Zenodo record is the version of record.
+- Research note (Zenodo): *"Conjecture: 8 | G(n) for every n ≥ 5,
+  checked for all n ≤ 71"*, doi:10.5281/zenodo.23634015 (all versions);
+  current version v4: https://zenodo.org/records/23803911
+- Technical note (Zenodo): *"Endpoint structure of graceful
+  permutations of paths"*, doi:10.5281/zenodo.23802065 (all versions);
+  current version v2: https://zenodo.org/records/23820863
 - Parity structure of the odd endpoint classes and pre-registered
   predictions for n = 51..64 and 67..71: see
   `docs/odd_class_structure.md` and
   `docs/predictions_n51_64_67_71.md`, figures in `docs/figures/`.
-- OEIS A006967: https://oeis.org/A006967
+- OEIS A006967: https://oeis.org/A006967 ;
+  OEIS A395104: https://oeis.org/A395104
 
 ## License
 
-MIT (see `LICENSE`). Author: M. Moriyama.
+Code: MIT (see `LICENSE`). Data in `data/`: CC BY 4.0.
+Author: M. Moriyama. Citation metadata: see `CITATION.cff`.
